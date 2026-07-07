@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE — Fashion Store</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --accent: #c9a96e;
+      --gray: #f5f5f5;
+      --text-muted: #777;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,169,110,0.3);
+    }
+
+    .nav-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-icons {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .nav-icons button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--white);
+      font-size: 1.1rem;
+      transition: color 0.3s;
+      padding: 5px;
+    }
+
+    .nav-icons button:hover { color: var(--accent); }
+
+    .cart-btn {
+      background: var(--accent) !important;
+      color: var(--black) !important;
+      padding: 8px 18px !important;
+      border-radius: 2px !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: var(--white);
+      transition: 0.3s;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(10,10,10,0.98);
+      padding: 2rem 5%;
+      z-index: 999;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ===== HERO ===== */
+    .hero {
+      margin-top: 70px;
+      position: relative;
+      height: calc(100vh - 70px);
+      min-height: 500px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.2)),
+        url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1600&q=80') center/cover no-repeat;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 8%;
+      max-width: 680px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--black);
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 6px 14px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--black);
+      padding: 14px 34px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover { background: #ddb97e; transform: translateY(-2px); }
+
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,0.6);
+      color: var(--white);
+      padding: 14px 34px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bounce 2s infinite;
+    }
+
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ===== MARQUEE STRIP ===== */
+    .strip {
+      background: var(--accent);
+      padding: 12px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .strip-inner {
+      display: inline-flex;
+      gap: 3rem;
+      animation: marquee 20s linear infinite;
+    }
+
+    .strip span {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ===== SECTION HEADER ===== */
+    .section-header {
+      text-align: center;
+      padding: 80px 5% 40px;
+    }
+
+    .section-header .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ===== FILTER TABS ===== */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0 5% 50px;
+    }
+
+    .filter-btn {
+      padding: 9px 22px;
+      border: 1.5px solid #ddd;
+      background: none;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text-muted);
+      border-radius: 2px;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    /* ===== PRODUCT GRID ===== */
+    .products {
+      padding: 0 5% 100px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    /* ===== PRODUCT CARD ===== */
+    .card {
+      position: relative;
+      cursor: pointer;
+      group: true;
+    }
+
+    .card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--gray);
+      aspect-ratio: 3/4;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .card:hover .card-img-wrap img {
+      transform: scale(1.07);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      z-index: 1;
+    }
+
+    .card-badge.sale { background: #e44; }
+    .card-badge.new { background: var(--accent); color: var(--black); }
+
+    .card-actions {
+      position: absolute;
+      bottom: -60px;
+      left: 0; right: 0;
+      display: flex;
+      gap: 0;
+      transition: bottom 0.35s ease;
+      z-index: 2;
+    }
+
+    .card:hover .card-actions { bottom: 0; }
+
+    .card-actions button {
+      flex: 1;
+      padding: 14px 0;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-cart {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-cart:hover { background: #333; }
+
+    .btn-wish {
+      background: var(--accent);
+      color: var(--black);
+      flex: 0 0 50px !important;
+      font-size: 1rem !important;
+    }
+
+    .card-info {
+      padding: 1rem 0.2rem;
+    }
+
+    .card-category {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.2px;
+    }
+
+    .card-price-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .price-current {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .price-old {
+      font-size: 0.85rem;
+      color: #bbb;
+      text-decoration: line-through;
+    }
+
+    .card-colors {
+      display: flex;
+      gap: 6px;
+      margin-top: 0.6rem;
+    }
+
+    .color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #eee;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .color-dot:hover { border-color: var(--black); }
+
+    /* ===== FOOTER STRIP ===== */
+    .footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .footer span { color: var(--accent); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links, .nav-icons .cart-btn { display: none; }
+      .hamburger { display: flex; }
+
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 0.9rem; }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-icons { gap: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <a class="nav-logo" href="#">LUXE</a>
+
+  <ul class="nav-links">
+    <li><a href="#">New In</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Accessories</a></li>
+    <li><a href="#">Sale</a></li>
+  </ul>
+
+  <div class="nav-icons">
+    <button title="Search">🔍</button>
+    <button title="Wishlist">♡</button>
+    <button class="cart-btn" title="Cart">Bag (0)</button>
+    <button class="hamburger" id="hamburger" title="Menu" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">New In</a>
+  <a href="#">Women</a>
+  <a href="#">Men</a>
+  <a href="#">Accessories</a>
+  <a href="#">Sale</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Summer Collection 2026</span>
+    <h1>Dress Your <span>Story</span></h1>
+    <p>Timeless pieces crafted for the modern individual. Explore our curated edit of premium fashion.</p>
+    <div class="hero-btns">
+      <a href="#shop" class="btn-primary">Shop Now</a>
+      <a href="#" class="btn-outline">View Lookbook</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ===== STRIP ===== -->
+<div class="strip">
+  <div class="strip-inner">
+    <span>Free shipping over $120</span>
+    <span>★</span>
+    <span>New arrivals every week</span>
+    <span>★</span>
+    <span>Easy 30-day returns</span>
+    <span>★</span>
+    <span>Sustainably made</span>
+    <span>★</span>
+    <span>Free shipping over $120</span>
+    <span>★</span>
+    <span>New arrivals every week</span>
+    <span>★</span>
+    <span>Easy 30-day returns</span>
+    <span>★</span>
+    <span>Sustainably made</span>
+    <span>★</span>
+  </div>
+</div>
+
+<!-- ===== SHOP SECTION ===== -->
+<div id="shop">
+  <div class="section-header">
+    <span class="tag">Featured Collection</span>
+    <h2>New Arrivals</h2>
+    <p>Handpicked styles for the season — from casual everyday to elevated evening.</p>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Women</button>
+    <button class="filter-btn">Men</button>
+    <button class="filter-btn">Jackets</button>
+    <button class="filter-btn">Dresses</button>
+    <button class="filter-btn">Accessories</button>
+  </div>
+
+  <div class="products">
+    <div class="product-grid">
+
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge new">New</span>
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Linen Slip Dress"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Women · Dresses</div>
+          <div class="card-name">Silk Linen Slip Dress</div>
+          <div class="card-price-row">
+            <span class="price-current">$189</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#e8d5c0"></div>
+            <div class="color-dot" style="background:#2c2c2c"></div>
+            <div class="color-dot" style="background:#a3b5c0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge sale">−30%</span>
+          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80" alt="Oversized Blazer"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Men · Jackets</div>
+          <div class="card-name">Oversized Wool Blazer</div>
+          <div class="card-price-row">
+            <span class="price-current">$209</span>
+            <span class="price-old">$299</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#4a4a4a"></div>
+            <div class="color-dot" style="background:#8b7355"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge new">New</span>
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80" alt="Ribbed Knit Set"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Women · Co-ords</div>
+          <div class="card-name">Ribbed Knit Co-ord Set</div>
+          <div class="card-price-row">
+            <span class="price-current">$145</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#d4b8a0"></div>
+            <div class="color-dot" style="background:#c0c0b8"></div>
+            <div class="color-dot" style="background:#2d4a3e"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80" alt="Cargo Pants"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Men · Bottoms</div>
+          <div class="card-name">Utility Cargo Trousers</div>
+          <div class="card-price-row">
+            <span class="price-current">$119</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#5a5a40"></div>
+            <div class="color-dot" style="background:#2c2c2c"></div>
+            <div class="color-dot" style="background:#8b6914"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge sale">−20%</span>
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Trench Coat"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Women · Outerwear</div>
+          <div class="card-name">Classic Trench Coat</div>
+          <div class="card-price-row">
+            <span class="price-current">$279</span>
+            <span class="price-old">$349</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#c8a882"></div>
+            <div class="color-dot" style="background:#1a1a1a"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge new">New</span>
+          <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=600&q=80" alt="Graphic Tee"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Men · Tops</div>
+          <div class="card-name">Premium Graphic Tee</div>
+          <div class="card-price-row">
+            <span class="price-current">$65</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#f5f5f5"></div>
+            <div class="color-dot" style="background:#1a1a1a"></div>
+            <div class="color-dot" style="background:#6b4c3b"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Maxi Skirt"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Women · Skirts</div>
+          <div class="card-name">Floral Satin Maxi Skirt</div>
+          <div class="card-price-row">
+            <span class="price-current">$98</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#d4826a"></div>
+            <div class="color-dot" style="background:#6b8e7f"></div>
+            <div class="color-dot" style="background:#f0e6d3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <span class="card-badge sale">−25%</span>
+          <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?w=600&q=80" alt="Denim Jacket"/>
+          <div class="card-actions">
+            <button class="btn-cart">Add to Bag</button>
+            <button class="btn-wish">♡</button>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-category">Men · Jackets</div>
+          <div class="card-name">Washed Denim Jacket</div>
+          <div class="card-price-row">
+            <span class="price-current">$134</span>
+            <span class="price-old">$179</span>
+          </div>
+          <div class="card-colors">
+            <div class="color-dot" style="background:#6e8cad"></div>
+            <div class="color-dot" style="background:#2c3e50"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>© 2026 <span>LUXE</span> Fashion. All rights reserved. | Crafted with passion.</p>
+</footer>
+
+<script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  // Filter tabs
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Wishlist toggle
+  document.querySelectorAll('.btn-wish').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      btn.textContent = btn.textContent === '♡' ? '♥' : '♡';
+      btn.style.color = btn.textContent === '♥' ? '#e44' : '';
+    });
+  });
+
+  // Cart counter
+  let cartCount = 0;
+  const cartBtn = document.querySelector('.cart-btn');
+  document.querySelectorAll('.btn-cart').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cartCount++;
+      cartBtn.textContent = `Bag (${cartCount})`;
+    });
+  });
+</script>
+
+</body>
+</html>
